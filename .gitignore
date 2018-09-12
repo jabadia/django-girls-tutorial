@@ -1,2 +1,3 @@
 .idea
 django-girls-venv
+__pycache__
