@@ -2,6 +2,11 @@ from django.db import models
 from django.utils import timezone
 
 
+class PostManager(models.Manager):
+    def recent_posts(self, how_many=3):
+        return self.order_by('-published_date')[:how_many]
+
+
 class Post(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
@@ -15,3 +20,5 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    objects = PostManager()
