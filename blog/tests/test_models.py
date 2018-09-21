@@ -32,23 +32,33 @@ class TestBlogModels(TestCase):
 
 
 class TestBlogModelManager(TestCase):
+
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
         author = User.objects.create(username='sample_author')
 
         posts = [
-            ('post1', 'text1'),
-            ('post2', 'text2'),
-            ('post3', 'text3'),
-            ('post4', 'text4'),
+            ('post1', 'text1', '2018-09-01 00:00+00:00'),
+            ('post2', 'text2', '2018-09-03 00:00+00:00'),
+            ('post3', 'text3', '2018-09-05 00:00+00:00'),
+            ('post4', 'text4', '2018-09-06 00:00+00:00'),
         ]
 
-        for title, text in posts:
-            Post.objects.create(author=author, title=title, text=text)
+        for title, text, published_date in posts:
+            Post.objects.create(author=author, title=title, text=text, published_date=published_date)
 
-    def test_recent_posts(self):
+    def test_all_posts(self):
         all_posts = Post.objects.all()
         self.assertEqual(len(all_posts), 4)
+        all_post_titles = [post.title for post in all_posts]
+        self.assertListEqual(all_post_titles, ['post1', 'post2', 'post3', 'post4'])
+
+    def test_recent_posts(self):
         recent_posts = Post.objects.recent_posts(2)
         self.assertEqual(len(recent_posts), 2)
+        recent_post_titles = [post.title for post in recent_posts]
+        self.assertIn('post3', recent_post_titles)
+        self.assertIn('post4', recent_post_titles)
+        self.assertNotIn('post1', recent_post_titles)
+        self.assertNotIn('post2', recent_post_titles)
