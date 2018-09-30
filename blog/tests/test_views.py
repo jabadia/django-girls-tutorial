@@ -5,6 +5,7 @@ from blog.models import Post
 
 
 class BlogTestCase(TestCase):
+
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -24,6 +25,34 @@ class BlogTestCase(TestCase):
 
 
 class TestBlogViews(BlogTestCase):
+    
+    def test_not_authenticated_view(self):
+        posts_list_url = reverse('post_list')
+        response = self.client.get(posts_list_url)
+        self.assertContains(
+            response,
+            '<span class="username"><a href="/admin/login/?next=/">login</a> to add a new post</span>',
+            html=True
+        )
+        self.assertNotContains(response, '<span class="glyphicon glyphicon-plus"></span>', html=True)
+        self.assertNotContains(response, '<a href="/post/new/"')
+
+    def test_authenticated_view(self):
+        user_login = self.client.login(username='sample_author', password='123456')
+        self.assertTrue(user_login)
+        posts_list_url = reverse('post_list')
+        response = self.client.get(posts_list_url)
+        self.assertContains(
+            response,
+            '<span class="username">Hola sample_author! <a href="/admin/logout/?next=/">(logout)</a></span>',
+            html=True
+        )
+        self.assertContains(
+            response,
+            '<a href="/post/new/" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>',
+            html=True
+        )
+
     def test_posts_list_view(self):
         posts_list_url = reverse('post_list')
         response = self.client.get(posts_list_url)
