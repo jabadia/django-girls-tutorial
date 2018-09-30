@@ -11,6 +11,20 @@ class TestBlogForm(TestCase):
         form = PostForm(data={'title': '', 'text': ''})
         self.assertFalse(form.is_valid())
 
+    def test_invalid_form1(self):
+        form = PostForm(data={
+            'title': 'good title',
+            'text': ''
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_invalid_form2(self):
+        form = PostForm(data={
+            'title': '',
+            'text': 'good text'
+        })
+        self.assertFalse(form.is_valid())
+
     def test_valid_form(self):
         form = PostForm(data={'title': 'post title', 'text': 'post text'})
         self.assertTrue(form.is_valid())
