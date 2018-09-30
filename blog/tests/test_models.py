@@ -4,6 +4,7 @@ from blog.models import Post
 
 
 class TestBlogModels(TestCase):
+
     author = None
 
     @classmethod

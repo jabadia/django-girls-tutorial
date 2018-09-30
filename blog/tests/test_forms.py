@@ -7,6 +7,7 @@ from blog.tests.test_views import BlogTestCase
 
 
 class TestBlogForm(TestCase):
+
     def test_empty_form(self):
         form = PostForm(data={'title': '', 'text': ''})
         self.assertFalse(form.is_valid())
@@ -31,6 +32,7 @@ class TestBlogForm(TestCase):
 
 
 class TestBlogFormViews(BlogTestCase):
+
     def test_edit_form_view(self):
         user_login = self.client.login(username='sample_author', password='123456')
         self.assertTrue(user_login)
