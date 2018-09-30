@@ -6,8 +6,8 @@ from .forms import PostForm
 
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-    return render(request, 'blog/post_list.html', {'posts': posts})
+    recent_posts = Post.objects.recent_posts(3)
+    return render(request, 'blog/post_list.html', {'posts': recent_posts})
 
 
 def post_detail(request, pk):
