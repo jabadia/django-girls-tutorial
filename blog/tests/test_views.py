@@ -25,7 +25,7 @@ class BlogTestCase(TestCase):
 
 
 class TestBlogViews(BlogTestCase):
-    
+
     def test_not_authenticated_view(self):
         posts_list_url = reverse('post_list')
         response = self.client.get(posts_list_url)
@@ -38,8 +38,8 @@ class TestBlogViews(BlogTestCase):
         self.assertNotContains(response, '<a href="/post/new/"')
 
     def test_authenticated_view(self):
-        user_login = self.client.login(username='sample_author', password='123456')
-        self.assertTrue(user_login)
+        login_successful = self.client.login(username='sample_author', password='123456')
+        self.assertTrue(login_successful)
         posts_list_url = reverse('post_list')
         response = self.client.get(posts_list_url)
         self.assertContains(
@@ -69,8 +69,8 @@ class TestBlogViews(BlogTestCase):
         self.assertContains(response, '<p>text1</p>', html=True)
 
     def test_post_new_view(self):
-        user_login = self.client.login(username='sample_author', password='123456')
-        self.assertTrue(user_login)
+        login_successful = self.client.login(username='sample_author', password='123456')
+        self.assertTrue(login_successful)
         new_post_url = reverse('post_new')
         response = self.client.get(new_post_url)
         self.assertTemplateUsed(response, 'blog/post_edit.html')

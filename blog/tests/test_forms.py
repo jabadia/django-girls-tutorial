@@ -34,8 +34,8 @@ class TestBlogForm(TestCase):
 class TestBlogFormViews(BlogTestCase):
 
     def test_edit_form_view(self):
-        user_login = self.client.login(username='sample_author', password='123456')
-        self.assertTrue(user_login)
+        login_successful = self.client.login(username='sample_author', password='123456')
+        self.assertTrue(login_successful)
         post_edit_url = reverse('post_edit', kwargs={'pk': 1})
         response = self.client.get(post_edit_url)
         self.assertContains(response, '<h1>New post</h1>', html=True)
@@ -70,8 +70,8 @@ class TestBlogFormViews(BlogTestCase):
         self.assertEqual(unchanged_post.text, 'text1')
 
     def test_edit_valid_form_view(self):
-        user_login = self.client.login(username='sample_author', password='123456')
-        self.assertTrue(user_login)
+        login_successful = self.client.login(username='sample_author', password='123456')
+        self.assertTrue(login_successful)
         post_edit_url = reverse('post_edit', kwargs={'pk': 1})
         valid_form = {
             'title': 'post1_changed',
