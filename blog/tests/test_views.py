@@ -39,4 +39,18 @@ class TestBlogViews(BlogTestCase):
         self.assertContains(response, '<h1>post1</h1>', html=True)
         self.assertContains(response, '<p>text1</p>', html=True)
 
-
+    def test_post_new_view(self):
+        user_login = self.client.login(username='sample_author', password='123456')
+        self.assertTrue(user_login)
+        new_post_url = reverse('post_new')
+        response = self.client.get(new_post_url)
+        self.assertTemplateUsed(response, 'blog/post_edit.html')
+        new_post_data = {
+            'title': 'new post title',
+            'text': 'new post text',
+        }
+        response = self.client.post(new_post_url, new_post_data, follow=True)
+        new_post_detail_url = reverse('post_detail', kwargs={'pk': 5})
+        self.assertRedirects(response, new_post_detail_url, status_code=302, target_status_code=200)
+        self.assertContains(response, '<h1>%s</h1>' % (new_post_data['title'],), html=True)
+        self.assertContains(response, '<p>%s</p>' % (new_post_data['text'],), html=True)

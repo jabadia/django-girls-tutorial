@@ -48,6 +48,10 @@ class TestBlogModelManager(TestCase):
         for title, text, published_date in posts:
             Post.objects.create(author=author, title=title, text=text, published_date=published_date)
 
+    def test_post_repr(self):
+        post = Post.objects.get(pk=1)
+        self.assertEqual('<Post: %s>' % (post.title,), repr(post))
+
     def test_all_posts(self):
         all_posts = Post.objects.all()
         self.assertEqual(len(all_posts), 4)
