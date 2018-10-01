@@ -1,20 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
+from blog.utils import deprecated
 from .models import Post
 from .forms import PostForm
 
 
+@deprecated
 def post_list(request):
     recent_posts = Post.objects.recent_posts(3)
     return render(request, 'blog/post_list.html', {'posts': recent_posts})
 
 
+@deprecated
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
+@deprecated
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
